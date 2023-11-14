@@ -11,17 +11,17 @@ on:
         default: "A"
 
 jobs:
-  pass-var:
+  pass-masked-var:
     runs-on: ubuntu-latest
     steps:
-    - name: Set deploy location
+    - name: Mask solution name
       id: set-var
       run: |
         solution_name=${{ inputs.solution_name }}  
         echo "::add-mask::$solution_name"
         echo "solution_name=$solution_name" >> $GITHUB_ENV
 
-    - name: Read deploy location
+    - name: Read solution name
       id: read-var
       run: |
         echo "Directly printing the value doesn't work"
@@ -42,3 +42,6 @@ jobs:
             echo "Solution name not known"
             ;;
         esac
+
+        echo "However, it's not perfect"
+        echo "Your masked variable is: $solution_name" | sed 's/./& /g'
