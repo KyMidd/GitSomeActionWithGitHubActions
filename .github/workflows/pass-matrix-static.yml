@@ -9,7 +9,7 @@ on:
         default: "['env1', 'env2', 'env3']"
 
 jobs:
-  set-environment:
+  read-environment:
     runs-on: ubuntu-latest
     outputs:
       ENVIRONMENT: ${{ steps.set-environment-task.outputs.ENVIRONMENT }}
@@ -20,15 +20,15 @@ jobs:
       id: set-environment-task
       run: |
         # This worked with fromJSON() in the batch-deploy job
-        $environments = "${{ inputs.environments }}"
-        echo "ENVIRONMENT=['env1', 'env2', 'env3']" >> $GITHUB_OUTPUT
+        ENVIRONMENTS = "${{ inputs.environments }}"
+        echo "ENVIRONMENT=$ENVIRONMENTS" >> $GITHUB_OUTPUT
   
   batch-deploy:
-    needs: set-environment
+    needs: read-environment
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: ${{ fromJSON(needs.set-environment.outputs.ENVIRONMENT) }}
+        environment: ${{ fromJSON(needs.read-environment.outputs.ENVIRONMENT) }}
     steps:
     - name: Deploy to environment
       run: echo "hi mom"
