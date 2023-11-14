@@ -19,8 +19,7 @@ jobs:
     - name: Define deploy locations
       id: set-environment-task
       run: |
-        # This worked with fromJSON() in the batch-deploy job
-        ENVIRONMENTS = "${{ inputs.environments }}"
+        ENVIRONMENTS=${{ inputs.environments }}
         echo "ENVIRONMENT=$ENVIRONMENTS" >> $GITHUB_OUTPUT
   
   batch-deploy:
