@@ -1,3 +1,7 @@
+# This Action accepts a JSON array of environments to deploy to. 
+# That list of environments passes through the first job, and is sent to the second. 
+# The second job runs each environment in parallel
+
 name: Test passing matrix input statically
 
 on:
