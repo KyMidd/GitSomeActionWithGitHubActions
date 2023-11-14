@@ -33,4 +33,4 @@ jobs:
 
     - name: The deployed environment is ${{ inputs.target-environment }}
       run: |
-        echo "foobar"
+        echo "The titles of jobs can be used to quickly surface information in the UI"
