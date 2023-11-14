@@ -22,7 +22,7 @@ jobs:
     - name: Set deploy location
       id: set-var
       run: |
-        ENVIRONMENT=dev  
+        ENVIRONMENT=${{ inputs.ENVIRONMENT }}  
         echo "The ENVIRONMENT var is: $ENVIRONMENT"
         echo "ENVIRONMENT=$ENVIRONMENT" | tee -a $GITHUB_OUTPUT
 
