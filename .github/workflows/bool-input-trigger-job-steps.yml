@@ -2,7 +2,7 @@
 # That job sets a variable that is exported from the job, and is read by a downstream Job
 # That downstream Job will only run if job1.step2 runs and sets an output variable to true
 
-name: Bool trigger pass job triggers
+name: Bool input triggers steps, jobs
 
 on:
   workflow_dispatch:
