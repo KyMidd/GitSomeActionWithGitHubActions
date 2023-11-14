@@ -28,7 +28,7 @@ jobs:
   
   trigger-deploy:
     name: TF Batch Trigger Deploy
-    runs-on: Ue1TiEcrRunners
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -141,7 +141,7 @@ jobs:
   
   # gather-info:
   #   name: TF Batch Gather Info
-  #   runs-on: Ue1TiEcrRunners
+  #   runs-on: ubuntu-latest
   #   outputs:
   #     MAX_PARALLEL_DEPLOY: ${{ steps.set-deploy-strategy.outputs.MAX_PARALLEL_DEPLOY }}
   #     MATRIX: ${{ steps.set-pod-selection.outputs.MATRIX }}
@@ -210,7 +210,7 @@ jobs:
   # batch-deploy:
   #   name: TF Batch Gather Info
   #   needs: gather-info
-  #   runs-on: Ue1TiEcrRunners
+  #   runs-on: ubuntu-latest
   #   environment: pod-deployment # Requires approval to start
   #   strategy: 
   #     max-parallel: ${{ fromJSON(needs.gather-info.outputs.MAX_PARALLEL_DEPLOY) }}
