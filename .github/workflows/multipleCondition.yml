@@ -1,5 +1,12 @@
 name: Multiple condition validation
-on: workflow_dispatch
+on:
+  # Permit targeted manual trigger within console
+  workflow_dispatch:
+    inputs:
+      change-trigger:
+        description: Bool to trigger step and subsequent job
+        type: boolean
+        default: false
 
 jobs:
   
