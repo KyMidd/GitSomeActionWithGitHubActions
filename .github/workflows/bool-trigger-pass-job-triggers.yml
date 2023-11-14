@@ -1,4 +1,4 @@
-name: Multiple condition validation
+name: Bool trigger pass job triggers
 on:
   # Permit targeted manual trigger within console
   workflow_dispatch:
