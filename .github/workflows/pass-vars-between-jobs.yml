@@ -1,4 +1,8 @@
-
+# This job takes an input in the GitHub UI and passes it to a job
+# The first job reads it and writes it to an environment files. This makes the value accessible to downstream jobs
+# The downstream job reads the value, and if it's blank, exits with an error
+# The next job only runs if there's no error
+# The last job uses the value as the title of the step, which can be a great way to quickly surface information in the UI
 
 name: Passing variable between Steps
 
