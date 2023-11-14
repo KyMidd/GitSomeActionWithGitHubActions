@@ -14,23 +14,23 @@ jobs:
     name: Job 1
     runs-on: ubuntu-latest
     outputs:
-      TF_CHANGES: ${{ steps.tf-changes.outputs.TF_CHANGES }}
+      TRIGGER_DOWNSTREAM_JOBS: ${{ steps.set-output.outputs.TRIGGER_DOWNSTREAM_JOBS }}
     steps:
     - name: Stuff
-      id: tf-changes
+      id: set-output
       run: |
         echo "hi"
-        echo "${{ inputs.change-trigger }}"
-        echo "TF_CHANGES=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
+        #echo "${{ inputs.change-trigger }}" # true
+        echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
 
     - name: Run only when changes true
       # Run only when tf-changes is true
-      if: steps.tf-changes.outputs.TF_CHANGES == 'true'
-      id: tf-other-stuff
+      if: steps.tf-changes.outputs.TRIGGER_DOWNSTREAM_JOBS == 'true'
+      id: downstream-step
       run: |
         echo "This one isn't used, even though it's the same variable name"
         echo "Note how the Job output is fetched from a specific step name"
-        echo "TF_CHANGES=false" >> $GITHUB_OUTPUT
+        echo "TRIGGER_DOWNSTREAM_JOBS=false" >> $GITHUB_OUTPUT
 
   job2:
     name: Job 2
@@ -38,7 +38,7 @@ jobs:
     needs: job1
     # Run only when there are TF changes
     if: |
-      needs.gather-info.outputs.TF_CHANGES == 'true'
+      needs.job1.outputs.TRIGGER_DOWNSTREAM_JOBS == 'true'
     steps:
     - name: Stuff
       id: set-deploy-strategy
