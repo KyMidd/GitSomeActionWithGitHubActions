@@ -14,19 +14,19 @@ jobs:
     name: Job 1
     runs-on: ubuntu-latest
     outputs:
-      TRIGGER_DOWNSTREAM_JOBS: ${{ steps.set-output.outputs.TRIGGER_DOWNSTREAM_JOBS }}
+      TRIGGER_DOWNSTREAM_JOBS: ${{ steps.step2.outputs.TRIGGER_DOWNSTREAM_JOBS }}
     steps:
     - name: Stuff
       id: set-output
       run: |
         echo "hi"
-        echo "${{ inputs.change-trigger }}" # true
+        echo "${{ inputs.change-trigger }}" # true or false
         
     - name: Run only when changes true
       # Run only when TRIGGER_DOWNSTREAM_JOBS is true
       if: |
-        inputs.trigger-job1-step2 == 'true'
-      id: downstream-step
+        inputs.trigger-job1-step2 == true
+      id: step2
       run: |
         echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
 
