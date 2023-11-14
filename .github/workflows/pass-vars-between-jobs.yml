@@ -1,5 +1,15 @@
-name: Passing variable between Jobs
-on: workflow_dispatch
+
+
+name: Passing variable between Steps
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-environment:
+        description: The name of the environment to run
+        type: string
+        default: "develop"
+
 jobs:
   pass-var:
     runs-on: ubuntu-latest
@@ -7,7 +17,7 @@ jobs:
     - name: Set deploy location
       id: set-var
       run: |
-        ENVIRONMENT=dev  
+        ENVIRONMENT=${{ inputs.target-environment }}  
         echo "The ENVIRONMENT var is: $ENVIRONMENT"
         echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
     
@@ -20,3 +30,7 @@ jobs:
         else
           echo "The ENVIRONMENT var is set to: $ENVIRONMENT"
         fi
+
+    - name: The deployed environment is ${{ inputs.target-environment }}
+      run: |
+        echo "foobar"
