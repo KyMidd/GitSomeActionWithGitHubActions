@@ -6,7 +6,7 @@ on:
       environments:
         description: The environments to deploy to
         type: string
-        default: ""['env1', 'env2', 'env3']""
+        default: "\"['env1', 'env2', 'env3']\""
 
 jobs:
   read-environment:
