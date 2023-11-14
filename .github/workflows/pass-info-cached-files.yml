@@ -1,4 +1,8 @@
-name: Passing File Jobs v1
+# This Action writes a variable to the environment file and caches it for use in other jobs
+# The downstream job will read the cached file and write it to the environment file
+# The environment file is then printed to validate values are passed properly
+
+name: Passing Info Through Cached Files
 on: workflow_dispatch
 jobs:
   pass-var:
@@ -16,7 +20,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: env-cache-${{ github.run_id }}
-        retention-days: 365
+        retention-days: 90
         path: env.vars
 
   job2-read-var:
