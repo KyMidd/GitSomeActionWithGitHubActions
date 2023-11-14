@@ -2,7 +2,7 @@
 # That list of environments passes through the first job, and is sent to the second. 
 # The second job runs each environment in parallel
 
-name: Test passing matrix input statically
+name: Pass matrix input statically
 
 on:
   workflow_dispatch:
