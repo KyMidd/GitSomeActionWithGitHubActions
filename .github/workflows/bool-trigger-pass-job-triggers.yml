@@ -3,7 +3,7 @@ on:
   # Permit targeted manual trigger within console
   workflow_dispatch:
     inputs:
-      change-trigger:
+      trigger-job1-step2:
         description: Trigger steps and jobs
         type: boolean
         default: false
@@ -20,17 +20,15 @@ jobs:
       id: set-output
       run: |
         echo "hi"
-        #echo "${{ inputs.change-trigger }}" # true
-        echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
-
+        echo "${{ inputs.change-trigger }}" # true
+        
     - name: Run only when changes true
-      # Run only when tf-changes is true
-      if: steps.tf-changes.outputs.TRIGGER_DOWNSTREAM_JOBS == 'true'
+      # Run only when TRIGGER_DOWNSTREAM_JOBS is true
+      if: |
+        inputs.trigger-job1-step2 == 'true'
       id: downstream-step
       run: |
-        echo "This one isn't used, even though it's the same variable name"
-        echo "Note how the Job output is fetched from a specific step name"
-        echo "TRIGGER_DOWNSTREAM_JOBS=false" >> $GITHUB_OUTPUT
+        echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
 
   job2:
     name: Job 2
