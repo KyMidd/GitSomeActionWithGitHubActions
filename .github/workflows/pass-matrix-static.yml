@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       environments:
-        description: The environments to deploy to
+        description: The environments to deploy to, as a JSON array
         type: string
         default: "\"['env1', 'env2', 'env3']\""
 
