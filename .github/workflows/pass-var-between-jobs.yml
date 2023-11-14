@@ -3,7 +3,7 @@
 # The downstream job (job2-read-var) reads that value as an environmental variable called ENVIRONMENT
 # We thenk check to make sure that ENVIRONMENT is set and print it out
 
-name: Passing variable between jobs
+name: Passing variable between Jobs
 
 on:
   workflow_dispatch:
