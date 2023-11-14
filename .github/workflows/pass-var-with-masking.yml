@@ -1,4 +1,7 @@
-
+# This Action reads an input string and passes it to the first job
+# The first step reads the value, then masks it and writes it to the environment file
+# The second step reads the masked variable, and attempts to print it, which fails
+# Then we use a work-around to print the value with extra spaces, defeating the github native masking
 
 name: Passing variable with masking
 
