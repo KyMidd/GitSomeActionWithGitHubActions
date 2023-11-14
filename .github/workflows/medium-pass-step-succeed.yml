@@ -1,0 +1,22 @@
+name: Passing variable (Fixed)
+on: workflow_dispatch
+jobs:
+  pass-var:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set deploy location
+      id: set-var
+      run: |
+        ENVIRONMENT=dev  
+        echo "The ENVIRONMENT var is: $ENVIRONMENT"
+        echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+    
+    - name: Read deploy location
+      id: read-var
+      run: |
+        if [ -z "$ENVIRONMENT" ]; then
+          echo "No ENVIRONMENT var set, exiting"
+          exit 1
+        else
+          echo "The ENVIRONMENT var is set to: $ENVIRONMENT"
+        fi

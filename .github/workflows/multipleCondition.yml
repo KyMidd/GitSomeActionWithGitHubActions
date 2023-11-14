@@ -1,0 +1,37 @@
+name: Multiple condition validation
+on: workflow_dispatch
+
+jobs:
+  
+  step1:
+    name: Step 1
+    runs-on: Ue1TiEcrRunners
+    outputs:
+      TF_CHANGES: ${{ steps.tf-changes.outputs.TF_CHANGES }}
+    steps:
+    - name: Stuff
+      id: tf-changes
+      run: |
+        echo "hi"
+        echo "TF_CHANGES=false" >> $GITHUB_OUTPUT
+
+    - name: Run only when changes true
+      # Run only when tf-changes is true
+      if: steps.tf-changes.outputs.TF_CHANGES == 'true'
+      id: tf-other-stuff
+      run: |
+        echo "hi"
+        echo "TF_CHANGES=false" >> $GITHUB_OUTPUT
+
+  step2:
+    name: Step 2
+    runs-on: Ue1TiEcrRunners
+    needs: step1
+    # Run only when there are TF changes
+    if: |
+      needs.gather-info.outputs.TF_CHANGES == 'true'
+    steps:
+    - name: Stuff
+      id: set-deploy-strategy
+      run: |
+        echo "hi"  

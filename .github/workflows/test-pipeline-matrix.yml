@@ -1,0 +1,40 @@
+# Working
+name: Test passing matrix
+on: 
+  - workflow_dispatch
+  - push
+jobs:
+  set-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: ${{ steps.set-environment-task.outputs.ENVIRONMENT }}
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Define deploy locations
+      id: set-environment-task
+      run: |
+        # This worked with fromJSON() in the batch-deploy job
+        #echo "ENVIRONMENT=['env1', 'env2', 'env3']" >> $GITHUB_OUTPUT
+        
+        # This worked, can encode a single quote in a var
+        #env1="'env1'"
+        #env2="'env2'"
+        #env3="'env3'"
+        #echo "ENVIRONMENT=[$env1, $env2, $env3]" >> $GITHUB_OUTPUT
+
+        # Read pods from a directory
+        ALL_PODS=$(ls -l data/ | grep -Ev 'total' | rev | cut -d " " -f1 | rev | cut -d "." -f 1)
+        # Format environments list
+        ENV_LIST=$(echo "$ALL_PODS" | awk 'NF' | sed "s/^/'/g" | sed "s/$/'/g" | tr '\n' ', ' | sed 's/,$//' | sed 's/^/[/g' | sed 's/$/]/g' | sed 's/,/, /g')
+        # Write output
+        echo "ENVIRONMENT=$ENV_LIST" >> $GITHUB_OUTPUT
+  batch-deploy:
+    needs: set-environment
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: ${{ fromJSON(needs.set-environment.outputs.ENVIRONMENT) }}
+    steps:
+    - name: Deploy to environment
+      run: echo "hi mom"

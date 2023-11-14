@@ -1,0 +1,29 @@
+name: Passing variable Jobs v3 (Fixed)
+on: workflow_dispatch
+jobs:
+  pass-var:
+    runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: ${{ steps.set-var.outputs.ENVIRONMENT }}
+    steps:
+    - name: Set deploy location
+      id: set-var
+      run: |
+        ENVIRONMENT=dev  
+        echo "The ENVIRONMENT var is: $ENVIRONMENT"
+        echo "ENVIRONMENT=$ENVIRONMENT" | tee -a $GITHUB_ENV $GITHUB_OUTPUT
+
+  job2-read-var:
+    runs-on: ubuntu-latest
+    needs: pass-var
+    steps:
+    - name: Print the deploy location
+      env:
+        ENVIRONMENT: ${{ needs.pass-var.outputs.ENVIRONMENT }}
+      run: |
+        if [ -z "$ENVIRONMENT" ]; then
+          echo "No ENVIRONMENT var set, exiting"
+          exit 1
+        else
+          echo "The ENVIRONMENT var is set to: $ENVIRONMENT"
+        fi

@@ -1,0 +1,44 @@
+name: Passing File Jobs v1
+on: workflow_dispatch
+jobs:
+  pass-var:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set deploy location
+      id: set-var
+      run: |
+        ENVIRONMENT=dev  
+        echo "The ENVIRONMENT var is: $ENVIRONMENT"
+        echo "ENVIRONMENT=$ENVIRONMENT" | tee -a $GITHUB_ENV env.vars
+
+    - name: Cache Envs
+      id: cache-envs
+      uses: actions/upload-artifact@v3
+      with:
+        name: env-cache-${{ github.run_id }}
+        retention-days: 365
+        path: env.vars
+
+  job2-read-var:
+    runs-on: ubuntu-latest
+    needs: pass-var
+    steps:
+    - name: Download Env Vars
+      id: download-env-vars
+      uses: actions/download-artifact@v3
+      with:
+        name: env-cache-${{ github.run_id }}
+
+    - name: Read Env Vars
+      id: read-env-vars
+      run: |
+        cat env.vars >> $GITHUB_ENV
+    
+    - name: Print the deploy location
+      run: |
+        if [ -z "$ENVIRONMENT" ]; then
+          echo "No ENVIRONMENT var set, exiting"
+          exit 1
+        else
+          echo "The ENVIRONMENT var is set to: $ENVIRONMENT"
+        fi
