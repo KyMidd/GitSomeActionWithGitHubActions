@@ -1,5 +1,15 @@
+
+
 name: Passing variable with masking
-on: workflow_dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      solution_name:
+        description: The solution to execute, e.g., A, B, C
+        type: string
+        default: "A"
+
 jobs:
   pass-var:
     runs-on: ubuntu-latest
@@ -7,25 +17,28 @@ jobs:
     - name: Set deploy location
       id: set-var
       run: |
-        solution_name=dev  
+        solution_name=${{ inputs.solution_name }}  
         echo "::add-mask::$solution_name"
         echo "solution_name=$solution_name" >> $GITHUB_ENV
 
-        # Set GitHub Secrets for injecting into terraform
-        if [[ $(echo "$solution_name" | grep 'dev-') ]]; then
-          tf_plan_vars=-var="\"pfx_password=$pfx_password\""
-        elif [[ $(echo "$solution_name" | grep 'stg-') ]]; then
-          tf_plan_vars=-var="\"pfx_password=$pfx_password\""
-        elif [[ $(echo "$solution_name" | grep 'prd-') ]]; then
-          tf_plan_vars=-var="\"pfx_password=$pfx_password\""
-        fi
-    
     - name: Read deploy location
       id: read-var
       run: |
-        if [ -z "$solution_name" ]; then
-          echo "No solution_name var set, exiting"
-          exit 1
-        else
-          echo "The solution_name var is set to: $solution_name"
-        fi
+        echo "Directly printing the value doesn't work"
+        echo "$solution_name"
+
+        # However, deriving the value with logic is sometimes possible
+        case $solution_name in
+          A)
+            echo "Solution A"
+            ;;
+          B)
+            echo "Solution B"
+            ;;
+          C)
+            echo "Solution C"
+            ;;
+          *)
+            echo "Solution name not known"
+            ;;
+        esac
