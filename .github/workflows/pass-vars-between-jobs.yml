@@ -1,4 +1,4 @@
-name: Passing variable (Fixed)
+name: Passing variable between Jobs
 on: workflow_dispatch
 jobs:
   pass-var:
