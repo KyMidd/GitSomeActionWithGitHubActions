@@ -1,5 +1,18 @@
-name: Passing variable Jobs v3 (Fixed)
-on: workflow_dispatch
+# This job takes an input and passes it to the first job
+# Then it exports that value as an output
+# The downstream job (job2-read-var) reads that value as an environmental variable called ENVIRONMENT
+# We thenk check to make sure that ENVIRONMENT is set and print it out
+
+name: Passing variable between jobs
+
+on:
+  workflow_dispatch:
+    inputs:
+      ENVIRONMENT:
+        description: The name of the environment to run
+        type: string
+        default: "foobar"
+
 jobs:
   pass-var:
     runs-on: ubuntu-latest
@@ -11,7 +24,7 @@ jobs:
       run: |
         ENVIRONMENT=dev  
         echo "The ENVIRONMENT var is: $ENVIRONMENT"
-        echo "ENVIRONMENT=$ENVIRONMENT" | tee -a $GITHUB_ENV $GITHUB_OUTPUT
+        echo "ENVIRONMENT=$ENVIRONMENT" | tee -a $GITHUB_OUTPUT
 
   job2-read-var:
     runs-on: ubuntu-latest
