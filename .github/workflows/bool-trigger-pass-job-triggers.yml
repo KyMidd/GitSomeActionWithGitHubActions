@@ -20,6 +20,7 @@ jobs:
       id: tf-changes
       run: |
         echo "hi"
+        echo "${{ inputs.change-trigger }}"
         echo "TF_CHANGES=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
 
     - name: Run only when changes true
