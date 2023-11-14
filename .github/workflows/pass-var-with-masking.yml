@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       solution_name:
-        description: The solution to execute, e.g., A, B, C
+        description: The solution to execute, e.g., AAA, BBB, CCC
         type: string
-        default: "A"
+        default: "AAA"
 
 jobs:
   pass-masked-var:
@@ -26,22 +26,6 @@ jobs:
       run: |
         echo "Directly printing the value doesn't work"
         echo "$solution_name"
-
-        # However, deriving the value with logic is sometimes possible
-        case $solution_name in
-          A)
-            echo "Solution A"
-            ;;
-          B)
-            echo "Solution B"
-            ;;
-          C)
-            echo "Solution C"
-            ;;
-          *)
-            echo "Solution name not known"
-            ;;
-        esac
 
         echo "However, it's not perfect"
         echo "Your masked variable is: $solution_name" | sed 's/./& /g'
