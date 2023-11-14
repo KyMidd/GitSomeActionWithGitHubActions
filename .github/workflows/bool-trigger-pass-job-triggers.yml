@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       trigger-job1-step2:
-        description: Trigger steps and jobs
+        description: Trigger job1, step2
         type: boolean
         default: false
 
@@ -20,7 +20,7 @@ jobs:
       id: set-output
       run: |
         echo "hi"
-        echo "${{ inputs.change-trigger }}" # true or false
+        echo "${{ inputs.trigger-job1-step2 }}" # true or false
         
     - name: Run only when changes true
       # Run only when TRIGGER_DOWNSTREAM_JOBS is true
@@ -28,7 +28,7 @@ jobs:
         inputs.trigger-job1-step2 == true
       id: step2
       run: |
-        echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.change-trigger }}" >> $GITHUB_OUTPUT
+        echo "TRIGGER_DOWNSTREAM_JOBS=${{ inputs.trigger-job1-step2 }}" >> $GITHUB_OUTPUT
 
   job2:
     name: Job 2
