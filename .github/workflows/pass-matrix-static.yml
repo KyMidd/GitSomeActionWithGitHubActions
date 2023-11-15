@@ -5,7 +5,7 @@ name: Pass Matrix Static
 
 on: workflow_dispatch
 
-  jobs:
+jobs:
   set-environment:
     runs-on: ubuntu-latest
     outputs:
