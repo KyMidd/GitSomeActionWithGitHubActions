@@ -1,7 +1,11 @@
-# Working
-name: Test passing matrix
-on: 
-  - workflow_dispatch
+# This Action is a proof of concept for using a matrix based on a file iteration
+# It reads a directory of files and creates a matrix based on the files in that directory
+# I think this is a useful pattern for creating terraform data files and then using them to deploy to multiple environments, but haven't done so yet
+
+name: Matrix based on file iteration
+
+on: workflow_dispatch
+
 jobs:
   set-environment:
     runs-on: ubuntu-latest
@@ -13,21 +17,13 @@ jobs:
     - name: Define deploy locations
       id: set-environment-task
       run: |
-        # This worked with fromJSON() in the batch-deploy job
-        #echo "ENVIRONMENT=['env1', 'env2', 'env3']" >> $GITHUB_OUTPUT
-        
-        # This worked, can encode a single quote in a var
-        #env1="'env1'"
-        #env2="'env2'"
-        #env3="'env3'"
-        #echo "ENVIRONMENT=[$env1, $env2, $env3]" >> $GITHUB_OUTPUT
-
         # Read pods from a directory
         ALL_PODS=$(ls -l data/ | grep -Ev 'total' | rev | cut -d " " -f1 | rev | cut -d "." -f 1)
         # Format environments list
         ENV_LIST=$(echo "$ALL_PODS" | awk 'NF' | sed "s/^/'/g" | sed "s/$/'/g" | tr '\n' ', ' | sed 's/,$//' | sed 's/^/[/g' | sed 's/$/]/g' | sed 's/,/, /g')
         # Write output
         echo "ENVIRONMENT=$ENV_LIST" >> $GITHUB_OUTPUT
+  
   batch-deploy:
     needs: set-environment
     runs-on: ubuntu-latest
