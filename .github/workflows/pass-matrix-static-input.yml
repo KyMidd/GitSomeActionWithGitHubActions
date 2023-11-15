@@ -1,0 +1,37 @@
+# This Action accepts a JSON array of environments to deploy to. 
+# That list of environments passes through the first job, and is sent to the second. 
+# The second job runs each environment in parallel
+
+name: Pass matrix static input
+
+on:
+  workflow_dispatch:
+    inputs:
+      environments:
+        description: The environments to deploy to, as a JSON array
+        type: string
+        default: "\"['env1', 'env2', 'env3']\""
+
+jobs:
+  read-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: ${{ steps.set-environment-task.outputs.ENVIRONMENT }}
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Define deploy locations
+      id: set-environment-task
+      run: |
+        ENVIRONMENTS=${{ inputs.environments }}
+        echo "ENVIRONMENT=$ENVIRONMENTS" >> $GITHUB_OUTPUT
+  
+  batch-deploy:
+    needs: read-environment
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: ${{ fromJSON(needs.read-environment.outputs.ENVIRONMENT) }}
+    steps:
+    - name: Deploy to environment
+      run: echo "hi mom"
