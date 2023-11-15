@@ -2,7 +2,6 @@
 name: Test passing matrix
 on: 
   - workflow_dispatch
-  - push
 jobs:
   set-environment:
     runs-on: ubuntu-latest
