@@ -1,7 +1,7 @@
 # This Action constructs a static matrix using primitive variables
 # Encoding different types of quotes is possible, but difficult and error-prone
 
-name: Pass Matrix Static
+name: Pass matrix static
 
 on: workflow_dispatch
 

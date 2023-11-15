@@ -2,7 +2,7 @@
 # That list of environments passes through the first job, and is sent to the second. 
 # The second job runs each environment in parallel
 
-name: Pass matrix static input
+name: Pass matrix input json array
 
 on:
   workflow_dispatch:
