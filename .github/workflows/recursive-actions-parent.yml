@@ -21,10 +21,9 @@ jobs:
   job_b:
     needs: job_a
     if: |
-      needs.job_a.outputs.RUN_JOB_B == 'true'
+      needs.job_a.outputs.CHILD_SAYS_RUN_JOB_B == 'true'
     runs-on: ubuntu-latest
     steps:
     - name: Echo if we're running Job B
       run: |
-        echo "RUN_JOB_B value is ${{ needs.job_a.outputs.RUN_JOB_B }}"  
         echo "Job B is running"

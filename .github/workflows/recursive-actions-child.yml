@@ -13,9 +13,9 @@ on:
         type: boolean
         default: false
     outputs:
-      RUN_JOB_B:
+      CHILD_SAYS_RUN_JOB_B:
         description: Child computed value for whether to run job B
-        value: ${{ jobs.set_output.outputs.RUN_JOB_B }}
+        value: ${{ jobs.set_output.outputs.CHILD_SAYS_RUN_JOB_B }}
 
 jobs:
   set_output:
@@ -30,4 +30,4 @@ jobs:
       - name: Set output to trigger Job B
         id: set_output
         run: |
-          echo "RUN_JOB_B=${{ inputs.trigger_job_b }}" >> $GITHUB_OUTPUT
+          echo "CHILD_SAYS_RUN_JOB_B=${{ inputs.trigger_job_b }}" >> $GITHUB_OUTPUT
