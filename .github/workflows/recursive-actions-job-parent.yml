@@ -14,17 +14,23 @@ on:
 
 jobs:
   job_a:
+    # This syntax is to call an Action in the same repo
+    # To call an Action in a different repo, use owner/repo@version
     uses: ./.github/workflows/recursive-actions-child.yml
     with:
       parent_says_run_job_b: ${{ inputs.parent_says_run_job_b }}
 
   job_b:
+    
+    # Run Job A first, because we require its outputs to know whether to run Job B
     needs: job_a
+    
     # Using this "pipe" (|) syntax allows us to use multiple if statements
     # Note how 'true' is in quotes. This is because Actions interprets it as a string. 'true' without quotes doesn't work.
     if: |
       needs.job_a.outputs.CHILD_SAYS_RUN_JOB_B == 'true'
     runs-on: ubuntu-latest
+    
     steps:
     - name: Echo if we're running Job B
       run: |
