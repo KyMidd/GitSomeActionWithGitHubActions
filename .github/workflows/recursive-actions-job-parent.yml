@@ -1,4 +1,4 @@
-# This Action calls a child workflow and passes a bool to it
+# This Action calls a child workflow as a job and passes a bool to it
 # That child action processes our input, and returns a bool
 # We use that bool to control whether to run the next job
 
