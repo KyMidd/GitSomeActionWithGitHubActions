@@ -14,7 +14,7 @@ on:
 
 jobs:
   job_a:
-    uses: /.github/workflows/child-action@master
+    uses: /.github/workflows/child-action.yml@master
     with:
       run_job_b: ${{ inputs.run_job_b }}
 
