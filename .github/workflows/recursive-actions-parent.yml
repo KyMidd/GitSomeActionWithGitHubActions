@@ -20,6 +20,7 @@ jobs:
 
   job_b:
     needs: job_a
+    # Using this "pipe" (|) syntax allows us to use multiple if statements
     if: |
       needs.job_a.outputs.CHILD_SAYS_RUN_JOB_B == true
     runs-on: ubuntu-latest
