@@ -34,7 +34,7 @@ jobs:
         WORKFILE=$(cat ./.github/workflows/batch-run-data-files-child.yml)
         
         # Get all targateable env from workflow file
-        ALL_ENVIRONMENTS=$(echo "$WORKFILE" | yq .on.workflow_dispatch.inputs.location.options | grep -Ev '^#' | cut -d " " -f 2)
+        ALL_ENVIRONMENTS=$(echo "$WORKFILE" | yq .on.workflow_dispatch.inputs.data_file_to_run.options | grep -Ev '^#' | cut -d " " -f 2)
         
         # If env-selection-regex set to wildcard, select all envs
         if [[ ${{ github.event.inputs.env-selection-regex }} == "*" ]]; then
