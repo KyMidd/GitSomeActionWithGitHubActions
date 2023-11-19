@@ -1,0 +1,27 @@
+# This Action targets a single data file, and is used to print the name of that file. 
+# It's intended to be used by the batch-run parent Action that can run it many times in a matrix.
+
+name: Batch Run Data Files Child Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      data_file_to_run:
+        description: Data file to execute
+        type: choice
+        required: true
+        options:
+          - dev-S001
+          - stg-S002
+          - prd-S003
+          - prd-S004
+
+jobs:
+  
+  job1:
+    name: Print name of data file
+    runs-on: ubuntu-latest
+    steps:
+    - name: Print name of data file
+      run: |
+        echo "The name of the data file we're targeting is: ${{ inputs.data_file_to_run }}.tfvars"

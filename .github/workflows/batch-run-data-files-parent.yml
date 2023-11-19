@@ -1,0 +1,77 @@
+# This Action is intended to show how child Actions can be run in parallel using a matrix strategy
+# We also illustrate an input regex, which can be used to target only some of the child environments
+
+name: Batch Run Data Files Parent
+
+on:
+  # Permit targeted manual trigger within console
+  workflow_dispatch:
+    inputs:
+      env-selection-regex:
+        description: Regex to match environments to deploy, e.g. "dev-eastus" or substring match like "dev-", use asterisk "*" to select all environments
+        type: string
+        required: true
+        default: '*'
+
+jobs:
+  
+  gather-info:
+    name: Gather information
+    runs-on: ubuntu-latest
+    
+    # Set outputs for orchestration job
+    outputs:
+      TARGETED_ENVIRONMENTS: ${{ steps.set-targeted-environments.outputs.TARGETED_ENVIRONMENTS }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Specify envs to deploy using regex ${{ github.event.inputs.env-selection-regex }}
+      id: set-targeted-environments
+      run: |
+
+        # Read TF apply workfile as var
+        WORKFILE=$(cat ./.github/workflows/batch-run-data-files-child.yml)
+        
+        # Get all targateable env from workflow file
+        ALL_ENVIRONMENTS=$(echo "$WORKFILE" | yq .on.workflow_dispatch.inputs.location.options | grep -Ev '^#' | cut -d " " -f 2)
+        
+        # If env-selection-regex set to wildcard, select all envs
+        if [[ ${{ github.event.inputs.env-selection-regex }} == "*" ]]; then
+          echo "Wildcard used to select all envs, selecting all envs"
+          TARGETED_ENVIRONMENTS=$ALL_ENVIRONMENTS
+        else
+          echo "Wildcard not used to select all envs, selecting envs using regex"
+          TARGETED_ENVIRONMENTS=$(echo "$ALL_ENVIRONMENTS" | grep -E "${{ github.event.inputs.env-selection-regex }}" )
+        fi
+
+        # Print out list of envs we'll be targeting
+        echo "We'll be targeting the following envs:"
+        while IFS=$'\n' read -r ENVIRONMENT; do
+          echo "- $ENVIRONMENT"
+        done <<< "$TARGETED_ENVIRONMENTS"
+
+        # Remove old file and put all envs into list like: 'env1','env2','env3'
+        rm -f TARGETED_ENVIRONMENTS_HOLDER
+        while IFS=$'\n' read -r ENVIRONMENT; do
+          printf "'$ENVIRONMENT'", >> TARGETED_ENVIRONMENTS_HOLDER
+        done <<< "$TARGETED_ENVIRONMENTS"
+
+        # Read file as var and remove trailing comma
+        TARGETED_ENVIRONMENTS_OUTPUT=$(cat TARGETED_ENVIRONMENTS_HOLDER | sed 's/,$//')
+
+        # Send TARGETED_ENVIRONMENTS to output
+        echo "TARGETED_ENVIRONMENTS=[${TARGETED_ENVIRONMENTS_OUTPUT}]" >> $GITHUB_OUTPUT
+  
+  batch:
+    needs: gather-info
+    name: Batch
+    uses: ./.github/workflows/batch-run-data-files-child.yml
+    secrets: inherit
+    with:
+      data_file_to_run: ${{ matrix.environment }}
+    strategy:
+      #max-parallel: ${{ fromJSON(github.event.inputs.concurrency) }}
+      fail-fast: false
+      matrix:
+        environment: ${{ fromJSON(needs.gather-info.outputs.TARGETED_ENVIRONMENTS) }}
