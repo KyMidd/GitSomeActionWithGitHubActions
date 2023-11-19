@@ -30,4 +30,4 @@ jobs:
       - name: Set output to trigger Job B
         id: set_output
         run: |
-          echo "RUN_JOB_B=true" >> $GITHUB_OUTPUT
+          echo "RUN_JOB_B=${{ github.event.inputs.trigger_job_b }}" >> $GITHUB_OUTPUT
