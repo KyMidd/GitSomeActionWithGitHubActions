@@ -15,15 +15,13 @@ on:
 jobs:
   job_a:
     uses: ./.github/workflows/recursive-actions-child.yml
-    #outputs:
-    #  run_job_b: ${{ steps.tf-plan.outputs.TF_APPLY_ENVIRONMENT }}
     with:
       trigger_job_b: ${{ inputs.run_job_b }}
 
   job_b:
     needs: job_a
     if: |
-      ${{ needs.job_a.outputs.RUN_JOB_B == 'true' }}
+      ${{ needs.job_a.outputs.RUN_JOB_B == true }}
     runs-on: ubuntu-latest
     steps:
     - run: echo "Job B is running"
