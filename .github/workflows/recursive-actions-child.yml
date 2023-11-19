@@ -7,8 +7,8 @@ name: Recursive Actions - Child
 on:
   workflow_call:
     inputs:
-      trigger_job_b:
-        description: Whether to run job B
+      parent_says_run_job_b:
+        description: Whether parent says to run job B
         required: true
         type: boolean
         default: false
@@ -30,4 +30,4 @@ jobs:
       - name: Set output to trigger Job B
         id: set_output
         run: |
-          echo "CHILD_SAYS_RUN_JOB_B=${{ inputs.trigger_job_b }}" >> $GITHUB_OUTPUT
+          echo "CHILD_SAYS_RUN_JOB_B=${{ inputs.parent_says_run_job_b }}" >> $GITHUB_OUTPUT
