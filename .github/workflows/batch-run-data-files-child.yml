@@ -4,6 +4,7 @@
 name: Batch Run Data Files Child Workflow
 
 on:
+  # Permits trigger from manual run in GitHub UI
   workflow_dispatch:
     inputs:
       data_file_to_run:
@@ -15,6 +16,13 @@ on:
           - stg-S002
           - prd-S003
           - prd-S004
+
+  # Permits trigger from batch action
+  workflow_call:
+    inputs:
+      data_file_to_run:
+        required: true
+        type: string
 
 jobs:
   
