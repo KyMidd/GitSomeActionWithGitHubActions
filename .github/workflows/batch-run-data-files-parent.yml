@@ -71,7 +71,6 @@ jobs:
     with:
       data_file_to_run: ${{ matrix.environment }}
     strategy:
-      #max-parallel: ${{ fromJSON(github.event.inputs.concurrency) }}
       fail-fast: false
       matrix:
         environment: ${{ fromJSON(needs.gather-info.outputs.TARGETED_ENVIRONMENTS) }}
