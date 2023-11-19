@@ -19,8 +19,10 @@ jobs:
       run: |
         # Read pods from a directory
         ALL_PODS=$(ls -l data/ | grep -Ev 'total' | rev | cut -d " " -f1 | rev | cut -d "." -f 1)
+        
         # Format environments list
         ENV_LIST=$(echo "$ALL_PODS" | awk 'NF' | sed "s/^/'/g" | sed "s/$/'/g" | tr '\n' ', ' | sed 's/,$//' | sed 's/^/[/g' | sed 's/$/]/g' | sed 's/,/, /g')
+        
         # Write output
         echo "ENVIRONMENT=$ENV_LIST" >> $GITHUB_OUTPUT
   
