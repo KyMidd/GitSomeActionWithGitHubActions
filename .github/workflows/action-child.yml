@@ -2,7 +2,7 @@
 # We establish inputs on "workflow_call" to allow the parent to control this Action
 # This Action outputs a variable that the parent can use to control whether to run a job
 
-name: 
+name: Child Action, Returns Output
 
 on:
   workflow_call:
