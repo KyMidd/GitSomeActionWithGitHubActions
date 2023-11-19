@@ -12,6 +12,11 @@ on:
         required: true
         type: boolean
         default: false
+    outputs:
+      RUN_JOB_B:
+        description: Whether to run job B
+        required: true
+        type: boolean
 
 jobs:
   set_output:
