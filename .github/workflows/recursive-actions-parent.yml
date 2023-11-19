@@ -16,7 +16,7 @@ jobs:
   job_a:
     uses: ./.github/workflows/recursive-actions-child.yml
     with:
-      run_job_b: ${{ inputs.run_job_b }}
+      trigger_job_b: ${{ inputs.run_job_b }}
 
   job_b:
     needs: job_a
