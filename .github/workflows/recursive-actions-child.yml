@@ -21,7 +21,7 @@ jobs:
   set_output:
     runs-on: ubuntu-latest
     outputs:
-      RUN_JOB_B: ${{ steps.set_output.outputs.RUN_JOB_B }}
+      CHILD_SAYS_RUN_JOB_B: ${{ steps.set_output.outputs.CHILD_SAYS_RUN_JOB_B }}
     steps:
       - name: Set output to trigger Job B
         id: set_output
