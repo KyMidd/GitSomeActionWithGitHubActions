@@ -1,0 +1,27 @@
+# This Action calls a child workflow and passes a bool to it
+# That child action processes our input, and returns a bool
+# We use that bool to control whether to run the next job
+
+name: Parent Action which calls Child Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_job_b:
+        description: Should we tell child to run job B?
+        type: boolean
+        default: false
+
+jobs:
+  job_a:
+    uses: ../child-action.yml
+    with:
+      run_job_b: ${{ inputs.run_job_b }}
+
+  job_b:
+    needs: job_a
+    if: |
+      ${{ needs.job_a.outputs.run_job_b == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "Job B is running"

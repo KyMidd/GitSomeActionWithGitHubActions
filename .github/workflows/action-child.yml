@@ -1,0 +1,29 @@
+# This Action is intended as a child action, and is called by a parent
+# We establish inputs on "workflow_call" to allow the parent to control this Action
+# This Action outputs a variable that the parent can use to control whether to run a job
+
+name: 
+
+on:
+  workflow_call:
+    inputs:
+      trigger_job_b:
+        description: Whether to run job B
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  set_output:
+    runs-on: ubuntu-latest
+    outputs:
+      RUN_JOB_B: ${{ steps.set_output.outputs.RUN_JOB_B }}
+    steps:
+      - name: Do nothing
+        run: |
+          echo "hi mom"
+
+      - name: Set output to trigger Job B
+        id: set_output
+        run: |
+          echo "RUN_JOB_B=true" >> $GITHUB_OUTPUT
