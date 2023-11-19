@@ -4,7 +4,7 @@
 name: Batch Run Data Files Parent
 
 on:
-  # Permit targeted manual trigger within console
+  # Permit targeted manual trigger within GitHub UI
   workflow_dispatch:
     inputs:
       env-selection-regex:
