@@ -23,10 +23,6 @@ jobs:
     outputs:
       RUN_JOB_B: ${{ steps.set_output.outputs.RUN_JOB_B }}
     steps:
-      - name: Do nothing
-        run: |
-          echo "hi mom"
-
       - name: Set output to trigger Job B
         id: set_output
         run: |
