@@ -14,9 +14,8 @@ on:
         default: false
     outputs:
       RUN_JOB_B:
-        description: Whether to run job B
-        required: true
-        type: boolean
+        description: Child computed value for whether to run job B
+        value: ${{ github.event.inputs.trigger_job_b }}
 
 jobs:
   set_output:
