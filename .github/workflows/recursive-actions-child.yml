@@ -15,7 +15,7 @@ on:
     outputs:
       RUN_JOB_B:
         description: Child computed value for whether to run job B
-        value: ${{ github.event.inputs.trigger_job_b }}
+        value: ${{ jobs.set_output.outputs.RUN_JOB_B }}
 
 jobs:
   set_output:
