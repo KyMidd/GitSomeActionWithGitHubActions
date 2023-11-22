@@ -1,0 +1,34 @@
+# This action illustrates triggers for a workload
+# This uses a common pattern of any commit pushed to a pull request, or when that PR is merged to a master/main branch
+# It also permits running manually from the console. All are separate and can be removed or updated as required. 
+
+name: Triggers on PR Merge
+
+# Trigger Action to run on push to any branch except master, main, or when pull request to master or main is merged
+on:
+  # Run automatically on a push to any branch other than master or main
+  push:
+    branches-ignore:
+      - master
+      - main
+  
+  # Run automatically when a pull request to master or main is closed
+  pull_request:
+    branches:
+      - master
+      - main
+    types: [closed]
+  
+  # Permit running manually from the console
+  workflow_dispatch:
+
+jobs:
+
+  job1:
+    name: Do stuff
+    runs-on: ubuntu-latest
+    steps:
+    - name: "This run triggered by: ${{ github.event_name }}"
+      run: |
+        echo "The github event package is here: ${{ github.event }}"
+
