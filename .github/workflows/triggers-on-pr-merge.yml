@@ -30,5 +30,4 @@ jobs:
     steps:
     - name: "This run triggered by: ${{ github.event_name }}"
       run: |
-        echo "The github event package is here: ${{ github.event }}"
-
+        echo "The github event package is here: ${{ github.event }}, but you have to specify specific attributes to get the values"
